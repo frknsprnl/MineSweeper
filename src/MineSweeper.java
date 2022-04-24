@@ -7,8 +7,6 @@ public class MineSweeper {
     int col;
     String[][] fieldVisible;
     String[][] fieldHidden;
-    int selectRow = 0;
-    int selectCol = 0;
 
     MineSweeper(int row, int col) {
         this.row = row;
@@ -21,6 +19,8 @@ public class MineSweeper {
         System.out.println("=== MineSweeper by frknsprnl ===");
         System.out.println("      Welcome to the game!    ");
         drawBoard();
+        printHidden();
+        selectCell();
     }
 
     void drawBoard() {
@@ -42,15 +42,13 @@ public class MineSweeper {
             }
         }
         plantMine();
-        printHidden();
-        selectField();
     }
 
 
     void plantMine() {
         Random rnd = new Random();
         int mineCount = (this.row * this.col) / 4;
-        int i = 0, j = 0;
+        int i, j;
         while (mineCount >= 0) {
             i = rnd.nextInt(this.row);
             j = rnd.nextInt(this.col);
@@ -70,31 +68,101 @@ public class MineSweeper {
         }
     }
 
-    void selectField() {
+    void printVisible() {
+        for (int i = 0; i < this.fieldVisible.length; i++) {
+            for (int j = 0; j < this.fieldVisible[i].length; j++) {
+                System.out.print(this.fieldVisible[i][j]);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    void selectCell() {
         Scanner input = new Scanner(System.in);
+        int selectedRow, selectedCol;
 
         while (true) {
 
-            if (this.selectRow == 0 && this.selectCol == 0){
-                System.out.print("Satir: ");
-                this.selectRow = input.nextInt();
-                System.out.print("Sutun: ");
-                this.selectCol = input.nextInt();
-            }
+            System.out.print("Satir: ");
+            selectedRow = input.nextInt();
 
-            if (!this.fieldHidden[this.selectRow][this.selectCol].equals("*")){
-                System.out.print("Satir: ");
-                this.selectRow = input.nextInt();
-                System.out.print("Sutun: ");
-                this.selectCol = input.nextInt();
-            }
+            System.out.print("Sutun: ");
+            selectedCol = input.nextInt();
 
-            else if (this.fieldHidden[this.selectRow][this.selectCol].equals("*")) {
-                System.out.println("Game over!");
+            if (selectedRow < 0 || selectedRow > this.row -1 || selectedCol < 0 || selectedCol > this.col -1){
+                System.out.println("Girdiginiz degerler tarlada bulunmuyor :)");
+                continue;
+            }
+            if (isMine(selectedRow, selectedCol)) {
+                this.fieldVisible[selectedRow][selectedCol] = String.valueOf(findNeighbour(selectedRow, selectedCol));
+                printVisible();
+            } else {
+                System.out.println("BOOM! Kaybettin.");
+                printHidden();
                 break;
-
             }
         }
+    }
+
+    boolean isMine(int selectedRow, int selectedCol) {
+        if (this.fieldHidden[selectedRow][selectedCol].equals("*")) {
+            return false;
+        } else if (this.fieldHidden[selectedRow][selectedCol].equals("-")) {
+            return true;
+        }
+        return true;
+    }
+
+    int findNeighbour(int a, int b) {
+        int nearMine = 0;
+        if (a != this.row - 1) {
+            if (this.fieldHidden[a + 1][b].equals("*")) {
+                nearMine++;
+            }
+            if (b != this.col - 1) {
+                if (this.fieldHidden[a + 1][b + 1].equals("*")) {
+                    nearMine++;
+                }
+            }
+            if (b != 0) {
+                if (this.fieldHidden[a + 1][b - 1].equals("*")) {
+                    nearMine++;
+                }
+            }
+        }
+
+        if (a != 0) {
+            if (this.fieldHidden[a - 1][b].equals("*")) {
+                nearMine++;
+            }
+            if (b != this.col - 1) {
+                if (this.fieldHidden[a - 1][b + 1].equals("*")) {
+                    nearMine++;
+                }
+            }
+            if (b != 0) {
+                if (this.fieldHidden[a - 1][b - 1].equals("*")) {
+                    nearMine++;
+                }
+            }
+        }
+
+        if (b != 0) {
+
+            if (this.fieldHidden[a][b - 1].equals("*")) {
+                nearMine++;
+            }
+
+        }
+        if (b != this.col - 1) {
+            if (this.fieldHidden[a][b + 1].equals("*")) {
+                nearMine++;
+            }
+        }
+
+        return nearMine;
     }
 }
 
