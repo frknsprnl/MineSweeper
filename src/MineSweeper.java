@@ -19,7 +19,7 @@ public class MineSweeper {
         System.out.println("=== MineSweeper by frknsprnl ===");
         System.out.println("      Welcome to the game!    ");
         drawBoard();
-        printHidden();
+        //printHidden();
         selectCell();
     }
 
@@ -76,7 +76,7 @@ public class MineSweeper {
             }
             System.out.println();
         }
-
+        System.out.println();
     }
 
     void selectCell() {
@@ -91,7 +91,7 @@ public class MineSweeper {
             System.out.print("Sutun: ");
             selectedCol = input.nextInt();
 
-            if (selectedRow < 0 || selectedRow > this.row -1 || selectedCol < 0 || selectedCol > this.col -1){
+            if (selectedRow < 0 || selectedRow > this.row - 1 || selectedCol < 0 || selectedCol > this.col - 1) {
                 System.out.println("Girdiginiz degerler tarlada bulunmuyor :)");
                 continue;
             }
@@ -101,6 +101,10 @@ public class MineSweeper {
             } else {
                 System.out.println("BOOM! Kaybettin.");
                 printHidden();
+                break;
+            }
+            if (checkWin()) {
+                System.out.println("Kazandiniz! Tebrikler!");
                 break;
             }
         }
@@ -163,6 +167,26 @@ public class MineSweeper {
         }
 
         return nearMine;
+    }
+
+    boolean checkWin() {
+        int counterHidden = 0;
+        int counterVisible = 0;
+        for (int i = 0; i < this.fieldHidden.length; i++) {
+            for (int j = 0; j < this.fieldHidden.length; j++) {
+                if (this.fieldHidden[i][j].equals("*")) {
+                    counterHidden++;
+                }
+            }
+        }
+        for (int i = 0; i < this.fieldVisible.length; i++) {
+            for (int j = 0; j < this.fieldVisible.length; j++) {
+                if (this.fieldVisible[i][j].equals("-")) {
+                    counterVisible++;
+                }
+            }
+        }
+        return counterHidden == counterVisible;
     }
 }
 
