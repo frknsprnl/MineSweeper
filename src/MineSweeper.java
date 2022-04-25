@@ -49,7 +49,7 @@ public class MineSweeper {
         Random rnd = new Random();
         int mineCount = (this.row * this.col) / 4;
         int i, j;
-        while (mineCount >= 0) {
+        while (mineCount > 0) {
             i = rnd.nextInt(this.row);
             j = rnd.nextInt(this.col);
             this.fieldHidden[i][j] = "*";
