@@ -19,7 +19,7 @@ public class MineSweeper {
         System.out.println("=== MineSweeper by frknsprnl ===");
         System.out.println("      Welcome to the game!    ");
         drawBoard();
-        //printHidden();
+        printHidden();
         selectCell();
     }
 
@@ -52,6 +52,9 @@ public class MineSweeper {
         while (mineCount > 0) {
             i = rnd.nextInt(this.row);
             j = rnd.nextInt(this.col);
+            if (this.fieldHidden[i][j].equals("*")){
+                continue;
+            }
             this.fieldHidden[i][j] = "*";
             mineCount--;
         }
