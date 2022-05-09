@@ -19,7 +19,7 @@ public class MineSweeper {
         System.out.println("=== MineSweeper by frknsprnl ===");
         System.out.println("      Welcome to the game!    ");
         drawBoard();
-        printHidden();
+        //printHidden();
         selectCell();
     }
 
@@ -93,6 +93,9 @@ public class MineSweeper {
 
             System.out.print("Sutun: ");
             selectedCol = input.nextInt();
+
+            selectedRow = selectedRow - 1;
+            selectedCol = selectedCol - 1;
 
             if (selectedRow < 0 || selectedRow > this.row - 1 || selectedCol < 0 || selectedCol > this.col - 1) {
                 System.out.println("Girdiginiz degerler tarlada bulunmuyor :)");
